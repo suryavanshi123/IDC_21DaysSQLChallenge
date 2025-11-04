@@ -1,3 +1,4 @@
+create schema Hospital;
 
 /*Retrieve all columns from the patients table*/
  select*from patients;
