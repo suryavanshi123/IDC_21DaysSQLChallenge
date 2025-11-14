@@ -1,0 +1,26 @@
+
+
+/* List all unique services in the patients table.*/
+	select distinct service
+    from patients;
+    
+/*Find all unique staff roles in the hospital.*/
+	select distinct role
+    from staff;
+    
+/* Get distinct months from the services_weekly table.*/
+	select distinct month 
+    from services_weekly;
+
+/*Today's Challenge
+
+Question: Find all unique combinations of service and event type from the services_weekly table where events are not
+ null or none, along with the count of occurrences for each combination. Order by count descending*/
+	select service,event,
+    count(*)as event_count
+    from services_weekly
+    where event is not null
+		and lower(event)<> 'none'
+        group by service,event
+        order by event_count desc;
+    
