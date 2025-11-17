@@ -1,0 +1,67 @@
+
+/* Join patients and staff based on their common service field (show patient and staff who work in same service).*/
+	SELECT
+    p.patient_id,
+    p.name AS patient_name,
+    p.service,
+    s.staff_id,
+    s.staff_name,
+    s.role
+FROM patients p
+JOIN staff s
+    ON p.service = s.service;
+
+/*Join services_weekly with staff to show weekly service data with staff information.*/
+	SELECT
+    sw.week,
+    sw.service,
+    sw.event,
+    sw.patient_satisfaction,
+    sw.staff_morale,
+    s.staff_id,
+    s.staff_name,
+    s.role
+FROM services_weekly sw
+JOIN staff s
+    ON sw.service = s.service;
+
+/*Create a report showing patient information along with staff assigned to their service.*/
+/*I use LEFT JOIN here because we want all patients listed, even if there is no staff assigned for their service.*/
+	SELECT
+    p.patient_id,
+    p.name AS patient_name,
+    p.age,
+    p.service,
+    s.staff_name,
+    s.role
+FROM patients p
+LEFT JOIN staff s
+    ON p.service = s.service
+ORDER BY p.patient_id;
+
+/*Today's Challenge:
+
+Question: Create a comprehensive report showing patient_id, patient name, age, service, and the total number of 
+staff members available in their service. Only include patients from services that have more than 5 staff members.
+ Order by number of staff descending, then by patient name.*/
+ 
+/*we need a subquery here Because we want to count staff per service first, then use that count to join with patients.*/
+	SELECT
+    p.patient_id,
+    p.name AS patient_name,
+    p.age,
+    p.service,
+    staff_count.total_staff
+FROM patients p
+JOIN (
+    SELECT
+        service,
+        COUNT(*) AS total_staff
+    FROM staff
+    GROUP BY service
+    HAVING COUNT(*) > 5
+) staff_count
+    ON p.service = staff_count.service
+ORDER BY
+    staff_count.total_staff DESC,
+    p.name ASC;
