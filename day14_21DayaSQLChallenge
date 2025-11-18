@@ -1,0 +1,57 @@
+/*Show all staff members and their schedule information (including those with no schedule entries).*/
+	select 
+		s.staff_id,
+        s.role,
+        s.service,
+        ss.week,
+        ss.present
+	from staff s
+    left join staff_schedule ss 
+		on s.staff_id = ss.staff_id;
+        
+/* List all services from services_weekly and their corresponding staff (show services even if no staff assigned).*/
+select 
+    sw.service,
+    sw.week,
+    sw.event,
+    s.staff_id,
+    s.staff_name,
+    s.role
+    from services_weekly sw 
+    left join staff s
+		on sw.service = s.service;
+
+      /*Display all patients and their service's weekly statistics (if available).*/
+	select
+		p.patient_id,
+        p.name as patient_name,
+        p.service,
+        sw.week,
+        sw.patient_satisfaction,
+        sw.staff_morale,
+        sw.event
+	from patients p
+    left join services_weekly sw 
+		on p.service = sw.service;
+
+### Today's Challenge:
+
+/*Question: Create a staff utilisation report showing all staff members (staff_id, staff_name, role, service) and the 
+count of weeks they were present (from staff_schedule). Include staff members even if they have no schedule records. 
+Order by weeks present descending.*/
+	 select 
+		s.staff_id,
+        s.staff_name,
+        s.role,
+        s.service,
+        count(ss.week) as week_present
+	from staff s
+    left join staff_schedule ss
+		on s.staff_id = ss.staff_id
+	group by 
+		s.staff_id,
+        s.staff_name,
+        s.role,
+        s.service
+        order by week_present desc,s.staff_name;
+        
