@@ -1,0 +1,26 @@
+🔥 Mini Project Completed: The Great Pizza Analytics Challenge! 🍕📊
+
+Today I wrapped up the Great Pizza Analytics Challenge a hands-on SQL mini-project as part of the IDC Challenge | DPDzero learning journey.
+
+Even though I’m posting this a little late 😅 the experience was absolutely worth it…
+
+a hands-on SQL mini-project that pushed me to apply everything from the past 15 days filtering, joins, aggregations, NULL handling, self-joins, and more.
+This challenge made me think like a real data analyst working with business data:
+
+how to structure queries, clean datasets, connect tables, and extract insights that actually matter.
+
+🧠 What I worked on:
+Exploring pizza categories, sizes & ingredients
+Handling missing data using COALESCE
+Filtering orders by time, date & price
+Breaking down sales performance using SUM, AVG, GROUP BY, and HAVING
+Performing multi-table joins and even self joins for price comparisons
+Identifying top-selling categories and pizzas never ordered
+Creating insights that could help a business improve pricing, inventory, and customer trends
+
+This mini project wasn’t just a practice task it felt like working on a real analytics brief.
+
+If you’re learning SQL I highly recommend challenges like this they help you truly understand how data works together.
+
+Key Insights :
+ Pizza sales data reveals 49,574 total units sold at an average price of $16.44. Classic category pizzas dominate as highest-volume driver exceeding Supreme by nearly 3,000 units while the Chicken category’s diverse variety contributes significantly to strong sales position.
