@@ -1,0 +1,103 @@
+
+/*Show each patient with their service's average satisfaction as an additional column.*/
+	SELECT 
+    p.patient_id,
+    p.name,
+    p.service,
+    p.satisfaction,
+    (
+        SELECT AVG(p2.satisfaction)
+        FROM patients p2
+        WHERE p2.service = p.service
+    ) AS service_avg_satisfaction
+FROM patients p;
+
+/*Create a derived table of service statistics and query from it.*/
+
+	SELECT 
+    s.service,
+    s.avg_satisfaction,
+    s.total_patients
+FROM (
+    SELECT 
+        service,
+        AVG(patient_satisfaction) AS avg_satisfaction,
+        COUNT(*) AS total_patients
+    FROM services_weekly
+    GROUP BY service
+) AS s;
+
+
+/*Display staff with their service's total patient count as a calculated field.*/
+
+	SELECT 
+    st.staff_id,
+    st.staff_name,
+    st.service,
+    svc.total_patients
+FROM staff st
+LEFT JOIN (
+    SELECT 
+        service,
+        COUNT(*) AS total_patients
+    FROM patients
+    GROUP BY service
+) AS svc
+ON st.service = svc.service;
+
+
+### Today's Challenge:
+
+/*Question: Create a report showing each service with: service name, total patients admitted, the difference between
+ their total admissions and the average admissions across all services, and a rank indicator
+ ('Above Average', 'Average', 'Below Average'). Order by total patients admitted descending.*/
+ 
+ SELECT 
+    s.service,
+    s.total_admissions,
+    s.total_admissions - (
+        SELECT AVG(total_admissions)
+        FROM (
+            SELECT 
+                service,
+                COUNT(*) AS total_admissions
+            FROM patients
+            GROUP BY service
+        ) AS inner_avg
+    ) AS difference_from_avg,
+    
+    CASE 
+        WHEN s.total_admissions > (
+            SELECT AVG(total_admissions)
+            FROM (
+                SELECT 
+                    service,
+                    COUNT(*) AS total_admissions
+                FROM patients
+                GROUP BY service
+            ) AS inner_avg
+        ) THEN 'Above Average'
+        
+        WHEN s.total_admissions = (
+            SELECT AVG(total_admissions)
+            FROM (
+                SELECT 
+                    service,
+                    COUNT(*) AS total_admissions
+                FROM patients
+                GROUP BY service
+            ) AS inner_avg
+        ) THEN 'Average'
+        
+        ELSE 'Below Average'
+    END AS rank_indicator
+
+FROM (
+    SELECT 
+        service,
+        COUNT(*) AS total_admissions
+    FROM patients
+    GROUP BY service
+) AS s
+
+ORDER BY s.total_admissions DESC;
