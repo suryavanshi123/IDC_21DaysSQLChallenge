@@ -1,0 +1,82 @@
+### Today's Challenge:
+/*Question: Create a comprehensive hospital performance dashboard using CTEs. Calculate: 1) Service-level metrics
+ (total admissions, refusals, avg satisfaction), 2) Staff metrics per service (total staff, avg weeks present), 3) 
+ Patient demographics per service (avg age, count). Then combine all three CTEs to create a final report showing 
+ service name, all calculated metrics, and an overall performance score (weighted average of admission rate and 
+ satisfaction). Order by performance score descending.*/
+	
+    WITH 
+-- 1) SERVICE-LEVEL METRICS
+service_metrics AS (
+    SELECT
+        service,
+        SUM(patients_admitted) AS total_admitted,
+        SUM(patients_refused) AS total_refused,
+        AVG(patient_satisfaction) AS avg_satisfaction,
+        ROUND(
+            100.0 * SUM(patients_admitted) /
+            NULLIF(SUM(patients_admitted) + SUM(patients_refused), 0),
+        2) AS admission_rate
+    FROM services_weekly
+    GROUP BY service
+),
+-- 2A) STAFF COUNT PER SERVICE
+staff_count AS (
+    SELECT 
+        service,
+        COUNT(*) AS total_staff
+    FROM staff
+    GROUP BY service
+),
+-- 2B) AVERAGE WEEKS PRESENT (COMES FROM services_weekly)
+staff_weeks AS (
+    SELECT
+        service,
+        AVG(week) AS avg_weeks_present
+    FROM services_weekly
+    GROUP BY service
+),
+
+
+-- 2C) MERGE STAFF METRICS
+staff_metrics AS (
+    SELECT
+        sc.service,
+        sc.total_staff,
+        sw.avg_weeks_present
+    FROM staff_count sc
+    LEFT JOIN staff_weeks sw 
+        ON sc.service = sw.service
+),
+-- 3) PATIENT DEMOGRAPHIC METRICS
+patient_metrics AS (
+    SELECT
+        service,
+        COUNT(*) AS total_patients,
+        AVG(age) AS avg_age
+    FROM patients
+    GROUP BY service
+),
+-- 4) FINAL DASHBOARD
+final_dashboard AS (
+    SELECT
+        sm.service,
+        sm.total_admitted,
+        sm.total_refused,
+        sm.avg_satisfaction,
+        sm.admission_rate,
+        stm.total_staff,
+        stm.avg_weeks_present,
+        pm.total_patients,
+        pm.avg_age,
+        ROUND(
+            (0.6 * sm.admission_rate) +
+            (0.4 * sm.avg_satisfaction),
+        2) AS performance_score
+    FROM service_metrics sm
+    LEFT JOIN staff_metrics stm ON sm.service = stm.service
+    LEFT JOIN patient_metrics pm ON sm.service = pm.service
+)
+SELECT *
+FROM final_dashboard
+ORDER BY performance_score DESC;
