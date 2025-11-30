@@ -20,7 +20,7 @@ As the lead data analyst, you must solve this case using only the data stored in
 - `evidence`
 
 All tables are loaded using the included SQL file:  
-📄 **SQL_Murder_Mystery.sql**
+📄 ** [SQL_Murder_Mystery.sql](SQL_Murder_Mystery.sql)**
 
 ---
 
