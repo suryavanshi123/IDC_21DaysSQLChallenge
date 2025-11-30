@@ -1,0 +1,49 @@
+# 🕵️ SQL Murder Mystery: *Who Killed the CEO?*
+
+A fictional data-analysis investigation where SQL is used to uncover the killer of TechNova Inc.’s CEO.  
+All clues — keycard logs, calls, alibis, movements, and evidence — are stored inside the database.
+
+My task:  
+👉 Use SQL queries to find **who killed the CEO**, **where**, **when**, and **how**.
+
+---
+
+## 📌 **Story Background**
+
+On **October 15, 2025**, the CEO of **TechNova Inc.** was found murdered in their private office.  
+As the lead data analyst, you must solve this case using only the data stored in:
+
+- `employees`
+- `keycard_logs`
+- `calls`
+- `alibis`
+- `evidence`
+
+All tables are loaded using the included SQL file:  
+📄 **SQL_Murder_Mystery.sql**
+
+---
+
+
+
+## **Hints & Learning Goals**
+
+💡 *Hints (not answers)*:
+
+- Use `WHERE` and `BETWEEN` to filter logs.
+- Use `JOIN` to connect tables like `employees` and `keycard_logs`.
+- Compare **claimed locations** with **actual locations** to find lies.
+- Look for **unusual access patterns** and **timing overlaps**.
+- Cross-check **evidence** to narrow down suspects.
+
+🧠 **Skills was Practice:**
+
+- Filtering data with `WHERE` and time ranges
+- Joining multiple tables
+- Using subqueries or CTEs for logical steps
+- Combining results across multiple tables to reach a conclusion
+- Analytical thinking using SQL
+
+
+
+
